@@ -1,4 +1,4 @@
-name: Build and Release Windows EXE
+name: Build and Release Windows
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
 jobs:
   build:
     runs-on: windows-latest
-    permissions: # Permissões necessárias para criar o release
+    permissions:
       contents: write
 
     steps:
@@ -23,16 +23,20 @@ jobs:
         python -m pip install --upgrade pip
         pip install pyinstaller pygame
 
-    - name: Build EXE with PyInstaller
+    - name: Build with PyInstaller
       run: |
-        pyinstaller --noconfirm --onefile --windowed --add-data "assets;assets" source/main.py
+        pyinstaller --noconfirm --onedir --windowed --add-data "assets;assets" source/main.py
+
+    - name: Zip Release folder
+      run: |
+        powershell Compress-Archive -Path dist/main/* -DestinationPath dist/Sus-Chess-Windows.zip
 
     - name: Create Release
       uses: softprops/action-gh-release@v2
       with:
         tag_name: v${{ github.run_number }}
         name: Release v${{ github.run_number }}
-        files: dist/main.exe
+        files: dist/Sus-Chess-Windows.zip
         draft: false
         prerelease: false
       env:
