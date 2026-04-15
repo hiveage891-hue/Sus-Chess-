@@ -1,0 +1,1 @@
+ter 14 abr 2026 19:29:38 -03: Arquivo /home/note-12/Área de Trabalho/joguinho/setup/source/GameTest.py não encontrado
